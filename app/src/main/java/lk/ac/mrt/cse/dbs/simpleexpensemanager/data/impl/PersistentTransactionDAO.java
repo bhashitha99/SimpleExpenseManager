@@ -16,10 +16,13 @@
 
 package lk.ac.mrt.cse.dbs.simpleexpensemanager.data.impl;
 
+import android.content.Context;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.DBHelper;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.TransactionDAO;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.ExpenseType;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.Transaction;
@@ -30,8 +33,10 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.Transaction;
  */
 public class PersistentTransactionDAO implements TransactionDAO {
     private final List<Transaction> transactions;
+    private DBHelper dbhelper;
 
-    public PersistentTransactionDAO() {
+    public PersistentTransactionDAO(DBHelper dbhelper) {
+        this.dbhelper=dbhelper;
         transactions = new LinkedList<>();
     }
 

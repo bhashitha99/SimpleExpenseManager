@@ -16,6 +16,9 @@
 
 package lk.ac.mrt.cse.dbs.simpleexpensemanager.data.impl;
 
+import android.content.Context;
+import android.database.Cursor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,14 +36,22 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.ExpenseType;
  */
 public class PersistentAccountDAO implements AccountDAO {
     private final Map<String, Account> accounts;
+    private DBHelper mydbhelper;
 
-    public PersistentAccountDAO() {
-
+    public PersistentAccountDAO(DBHelper mydbhelper) {
+        this.mydbhelper=mydbhelper;
         this.accounts = new HashMap<>();
+
     }
 
     @Override
     public List<String> getAccountNumbersList() {
+        ArrayList<Account> listOfaccount = mydbhelper.getdata();
+        int j=0;
+        while(j < listOfaccount.size()){
+            accounts.put(listOfaccount.get(j).getAccountNo(), listOfaccount.get(j));
+            j+=1;
+        }
 
         return new ArrayList<>(accounts.keySet());
     }
@@ -63,8 +74,7 @@ public class PersistentAccountDAO implements AccountDAO {
     @Override
     public void addAccount(Account account) {
         accounts.put(account.getAccountNo(), account);
-        DBHelper mydbhelper = new DBHelper(null);
-        Boolean add_or_not = mydbhelper.insertAccount(account.getAccountNo(),account.getBankName(),account.getAccountHolderName(),account.getBalance());
+        Boolean add_or_not = mydbhelper.insertAccount(account.getAccountNo(),account.getBankName(),account.getAccountHolderName(),String.valueOf(account.getBalance()));
         if(!add_or_not){
             System.out.println("fail");
         }
